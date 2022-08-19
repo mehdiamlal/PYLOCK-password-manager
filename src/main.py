@@ -1,6 +1,36 @@
 from tkinter import *
-from turtle import window_height
-# from tkmacosx import Button
+from tkinter import messagebox
+from random_pw_generator import *
+
+def generate_pw():
+    pw = random_pw_generator()
+    password_field.delete(0, "end")
+    password_field.insert(0, pw)
+    #copy password to clipboard
+    window.clipboard_clear()
+    window.clipboard_append(pw)
+
+def fields_empty():
+    """Checks if there's at least one empty field, returns True if there are."""
+    if len(website_field.get()) == 0:
+        return True
+    elif len(username_field.get()) == 0:
+        return True
+    elif len(password_field.get()) == 0:
+        return True
+    else:
+        return False
+
+def save_data():
+    if fields_empty():
+        messagebox.showwarning(title="Ooops", message="Please, enter all the required data.")
+    else:
+        with open("../data/log.txt", mode="a") as file:
+            file.write(f"{website_field.get()} | {username_field.get()} | {password_field.get()}\n")
+        website_field.delete(0, "end")
+        username_field.delete(0, "end")
+        password_field.delete(0, "end")
+        messagebox.showinfo(title="Success!", message="Your password was saved successfully!")
 
 window = Tk()
 win_width = 650
@@ -13,6 +43,7 @@ window.title("PYLOCK")
 window.geometry(f"{win_width}x{win_height}+{x}+{y}")
 window.config(bg="#fff", pady=75, padx=50)
 window.resizable(0, 0)
+# window.iconbitmap("../img/app_icon.ico")
 
 #logo image
 logo_img = PhotoImage(file="../img/logo.png")
@@ -40,11 +71,11 @@ password_field = Entry(bg="#fff", fg="#000", width=21, insertbackground="#000", 
 password_field.grid(row=3, column=1, pady=5, sticky="W")
 
 #generate password button
-pw_gen_btn = Button(text="Generate Password", highlightbackground="#fff")
+pw_gen_btn = Button(text="Generate Password", highlightbackground="#fff", command=generate_pw)
 pw_gen_btn.grid(row=3, column=2)
 
 #add button
-add_btn = Button(text="Add", width=36, highlightbackground="#fff")
+add_btn = Button(text="Add", width=36, highlightbackground="#fff", command=save_data)
 add_btn.grid(row=4, column=1, columnspan=2, pady=5, sticky="W")
 
 
