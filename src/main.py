@@ -1,9 +1,16 @@
 from tkinter import *
+from turtle import window_height
 # from tkmacosx import Button
 
 window = Tk()
+win_width = 650
+win_height = 600
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x = int((screen_width / 2) - (win_width / 2))
+y = int((screen_height / 2) - (win_height / 2))
 window.title("PYLOCK")
-window.geometry("700x600")
+window.geometry(f"{win_width}x{win_height}+{x}+{y}")
 window.config(bg="#fff", pady=75, padx=50)
 window.resizable(0, 0)
 
