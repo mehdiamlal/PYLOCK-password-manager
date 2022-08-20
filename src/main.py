@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from random_pw_generator import *
+import pandas as pd
 
 def generate_pw():
     pw = random_pw_generator()
@@ -25,11 +26,20 @@ def save_data():
     if fields_empty():
         messagebox.showwarning(title="Ooops", message="Please, enter all the required data.")
     else:
-        with open("../data/log.txt", mode="a") as file:
-            file.write(f"{website_field.get()} | {username_field.get()} | {password_field.get()}\n")
+        data = {
+            "Website": [website_field.get()],
+            "Email/Username": [username_field.get()],
+            "Password": [password_field.get()]
+        }
+
+        df = pd.DataFrame(data)
+        df.to_csv("../data/log.csv", mode="a", header=False, index=False)
+
+        #cleaning the fields
         website_field.delete(0, "end")
         username_field.delete(0, "end")
         password_field.delete(0, "end")
+
         messagebox.showinfo(title="Success!", message="Your password was saved successfully!")
 
 window = Tk()
