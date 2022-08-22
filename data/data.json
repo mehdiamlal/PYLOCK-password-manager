@@ -1,6 +1,18 @@
 {
-    "Twitter": {
-        "Email/Username": "elon@tesla.com",
-        "Password": "f!V2!qjuw)3bK3G8"
+    "google": {
+        "username": "larry@google.com",
+        "password": "#p64A+V!G3c3lmR%"
+    },
+    "facebook": {
+        "username": "zuck@facebook.com",
+        "password": "yX#fMsD67k*o%"
+    },
+    "tesla": {
+        "username": "elon@tesla.com",
+        "password": "JI&y065bCfwp%(v"
+    },
+    "amazon": {
+        "username": "jeff@amazon.com",
+        "password": "#RaWO8K8k%2lgF$E6&"
     }
 }

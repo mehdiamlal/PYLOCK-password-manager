@@ -1,3 +1,4 @@
+from re import search
 from tkinter import *
 from tkinter import messagebox
 from random_pw_generator import *
@@ -29,16 +30,16 @@ def save_data():
         messagebox.showwarning(title="Ooops", message="Please, enter all the required data.")
     else:
         new_data = {
-            website_field.get(): {
-                "Email/Username": username_field.get(),
-                "Password": password_field.get()
+            website_field.get().lower().strip(" "): {
+                "username": username_field.get().lower().strip(" "),
+                "password": password_field.get().strip(" ")
             }
         }
 
         try:
             with open("../data/data.json", "r") as file:
                 file_data = json.load(file)
-        except:
+        except FileNotFoundError:
             with open("../data/data.json", "w") as file:
                 json.dump(new_data, file, indent=4)
         else:
@@ -51,6 +52,32 @@ def save_data():
             password_field.delete(0, "end")
 
         messagebox.showinfo(title="Success!", message="Your password was saved successfully!")
+
+def search_data():
+    searched_website = website_field.get().lower().strip(" ")
+
+    if len(searched_website) == 0:
+        messagebox.showwarning(title="Ooops", message="Please enter a website to search related data.")
+    else:
+        try:
+            with open("../data/data.json", "r") as file:
+                file_data = json.load(file)
+        except FileNotFoundError:
+            messagebox.showwarning(title="Ooops", message=f"It seems like there's no {searched_website} account.")
+        else:
+            found = False
+            for k in file_data:
+                if k == searched_website:
+                    found = True
+                    user = file_data[k]["username"]
+                    pw = file_data[k]["password"]
+                    messagebox.showinfo(title="", message=f"Username: {user}\nPassword: {pw}")
+                    #copy the password to clipboard
+                    window.clipboard_clear()
+                    window.clipboard_append(pw)
+            if not found:
+                messagebox.showwarning(title="Ooops", message=f"It seems like there's no {searched_website} account.")
+
 
 window = Tk()
 win_width = 650
@@ -74,8 +101,12 @@ canvas.grid(row=0, column=1, columnspan=2, pady=5)
 #website field
 website_label = Label(text="Website:", bg="#fff", fg="#000")
 website_label.grid(row=1, column=0)
-website_field = Entry(bg="#fff", fg="#000", width=39, insertbackground="#000", highlightthickness=0.5, borderwidth=0.5)
-website_field.grid(row=1, column=1, columnspan=2, pady=5, sticky="W")
+website_field = Entry(bg="#fff", fg="#000", width=21, insertbackground="#000", highlightthickness=0.5, borderwidth=0.5)
+website_field.grid(row=1, column=1, pady=5, sticky="W")
+
+#search button
+search_btn = Button(text="Search", highlightbackground="#fff", width=13, command=search_data)
+search_btn.grid(row=1, column=2)
 
 #email/username field
 username_label = Label(text="Email/Username:", bg="#fff", fg="#000")
