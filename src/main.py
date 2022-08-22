@@ -23,6 +23,8 @@ def fields_empty():
         return False
 
 def save_data():
+    """Saves data in a .csv file, and empties the fields, expet the username one.
+    Shows a warning if there's an empty field."""
     if fields_empty():
         messagebox.showwarning(title="Ooops", message="Please, enter all the required data.")
     else:
@@ -37,7 +39,6 @@ def save_data():
 
         #cleaning the fields
         website_field.delete(0, "end")
-        username_field.delete(0, "end")
         password_field.delete(0, "end")
 
         messagebox.showinfo(title="Success!", message="Your password was saved successfully!")
