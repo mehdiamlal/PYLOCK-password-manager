@@ -1,6 +1,4 @@
-# PYLOCK-password-manager 🔒
-
-![logo-preview (1)](https://user-images.githubusercontent.com/76702446/185670082-acb16c76-b849-4e33-a74e-ffe3aaa7ced5.png)
+![logo-preview](https://user-images.githubusercontent.com/76702446/185670082-acb16c76-b849-4e33-a74e-ffe3aaa7ced5.png)
 
 ## How It Works
 
