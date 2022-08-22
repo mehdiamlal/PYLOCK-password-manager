@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from random_pw_generator import *
-import pandas as pd
+import json
 
 def generate_pw():
     pw = random_pw_generator()
@@ -28,18 +28,27 @@ def save_data():
     if fields_empty():
         messagebox.showwarning(title="Ooops", message="Please, enter all the required data.")
     else:
-        data = {
-            "Website": [website_field.get()],
-            "Email/Username": [username_field.get()],
-            "Password": [password_field.get()]
+        new_data = {
+            website_field.get(): {
+                "Email/Username": username_field.get(),
+                "Password": password_field.get()
+            }
         }
 
-        df = pd.DataFrame(data)
-        df.to_csv("../data/log.csv", mode="a", header=False, index=False)
-
-        #cleaning the fields
-        website_field.delete(0, "end")
-        password_field.delete(0, "end")
+        try:
+            with open("../data/data.json", "r") as file:
+                file_data = json.load(file)
+        except:
+            with open("../data/data.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+        else:
+            file_data.update(new_data)
+            with open("../data/data.json", "w") as file:
+                json.dump(file_data, file, indent=4)
+        finally:
+            #cleaning the fields
+            website_field.delete(0, "end")
+            password_field.delete(0, "end")
 
         messagebox.showinfo(title="Success!", message="Your password was saved successfully!")
 
