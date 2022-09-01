@@ -23,12 +23,32 @@ def fields_empty():
     else:
         return False
 
+def is_website_saved(website):
+    """Searches the .json file and returns true if it contains informations realted to it, false otherwise."""
+    try:
+        with open("../data/data.json") as file:
+            file_content = json.load(file)
+    except FileNotFoundError:
+        return False
+    else:
+        for entry in file_content:
+            if entry == website.lower():
+                return True
+        return False
+
 def save_data():
-    """Saves data in a .csv file, and empties the fields, expet the username one.
+    """Saves data in a .json file, and empties the fields, expet the username one.
     Shows a warning if there's an empty field."""
     if fields_empty():
         messagebox.showwarning(title="Ooops", message="Please, enter all the required data.")
     else:
+        if is_website_saved(website_field.get()):
+            choice = messagebox.askyesno(title="Update info", message="It seems like you already have a username and password attached to this website, do you want to update the information?")
+            if choice != True:
+                website_field.delete(0, "end")
+                password_field.delete(0, "end")
+                return None     #just to break out of the function
+                
         new_data = {
             website_field.get().lower().strip(" "): {
                 "username": username_field.get().lower().strip(" "),
@@ -63,7 +83,7 @@ def search_data():
             with open("../data/data.json", "r") as file:
                 file_data = json.load(file)
         except FileNotFoundError:
-            messagebox.showwarning(title="Ooops", message=f"It seems like there's no {searched_website} account.")
+            messagebox.showwarning(title="Ooops", message=f"It seems like there's no saved {searched_website} account.")
         else:
             found = False
             for k in file_data:
